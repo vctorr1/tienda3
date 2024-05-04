@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tienda3/paginas/auth/auth_service.dart';
 import 'package:tienda3/paginas/auth/signup_screen.dart';
-import 'package:tienda3/home_screen.dart';
 import 'package:tienda3/paginas/inicio.dart';
 import 'package:tienda3/widgets/button.dart';
 import 'package:tienda3/widgets/textfield.dart';

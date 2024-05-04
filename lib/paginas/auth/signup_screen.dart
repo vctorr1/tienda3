@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:tienda3/paginas/auth/auth_service.dart';
 import 'package:tienda3/paginas/auth/login_screen.dart';
-import 'package:tienda3/home_screen.dart';
 import 'package:tienda3/paginas/inicio.dart';
 import 'package:tienda3/widgets/button.dart';
 import 'package:tienda3/widgets/textfield.dart';
@@ -38,19 +37,19 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Column(
           children: [
             const Spacer(),
-            const Text("Signup",
+            const Text("Registro",
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500)),
             const SizedBox(
               height: 50,
             ),
             CustomTextField(
-              hint: "Enter Name",
-              label: "Name",
+              hint: "Introduce tu nombre",
+              label: "Nombre",
               controller: _name,
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hint: "Enter Email",
+              hint: "introduce tu email",
               label: "Email",
               controller: _email,
             ),
@@ -96,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final user = await _auth.createUserWithEmailAndPassword(
         _email.text, _password.text, _name.text);
     if (user != null) {
-      log("User Created Succesfully");
+      log("Usuario creado con exito");
       goToHome(context);
     }
   }
