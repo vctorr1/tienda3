@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:tienda3/auth/login_screen.dart';
+import 'package:tienda3/paginas/auth/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

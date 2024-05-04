@@ -1,5 +1,5 @@
-import 'package:tienda3/auth/auth_service.dart';
-import 'package:tienda3/auth/login_screen.dart';
+import 'package:tienda3/paginas/auth/auth_service.dart';
+import 'package:tienda3/paginas/auth/login_screen.dart';
 import 'package:tienda3/widgets/button.dart';
 import 'package:flutter/material.dart';
 
