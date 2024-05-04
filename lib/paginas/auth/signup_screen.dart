@@ -93,8 +93,8 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
   _signup() async {
-    final user =
-        await _auth.createUserWithEmailAndPassword(_email.text, _password.text);
+    final user = await _auth.createUserWithEmailAndPassword(
+        _email.text, _password.text, _name.text);
     if (user != null) {
       log("User Created Succesfully");
       goToHome(context);
