@@ -56,22 +56,23 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hint: "Enter Password",
-              label: "Password",
+              hint: "Introduce tu contraseña",
+              label: "Contraseña",
               isPassword: true,
               controller: _password,
             ),
             const SizedBox(height: 30),
             CustomButton(
-              label: "Signup",
+              label: "Registrarme",
               onPressed: _signup,
             ),
             const SizedBox(height: 5),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text("Already have an account? "),
+              const Text("Ya tienes cuenta? "),
               InkWell(
                 onTap: () => goToLogin(context),
-                child: const Text("Login", style: TextStyle(color: Colors.red)),
+                child: const Text("Iniciar Sesión",
+                    style: TextStyle(color: Colors.red)),
               )
             ]),
             const Spacer()
