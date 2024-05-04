@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   goToHome(BuildContext context) => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
 
   _login() async {
