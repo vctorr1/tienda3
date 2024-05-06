@@ -3,10 +3,14 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tienda3/paginas/db/usuarios.dart';
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
   late SharedPreferences preferencias;
+
+  //Instancia de userServices
+  UserServices _userServices = UserServices();
 
   Future<User?> createUserWithEmailAndPassword(
       String email, String password, String nombre) async {
@@ -15,6 +19,7 @@ class AuthService {
           email: email, password: password);
       //Llamar a createUserInFirestore después de la creación del usuario
       await createUserInFirestore(cred.user!, nombre);
+      await createUserInRealtimeDatabase(cred.user!);
       return cred.user;
     } catch (e) {
       log("Something went wrong");
@@ -61,6 +66,22 @@ class AuthService {
       }
     } catch (e) {
       log("Error creating user in Firestore: $e");
+    }
+  }
+
+  Future<void> createUserInRealtimeDatabase(User user) async {
+    try {
+      final uid = user.uid;
+      final data = {
+        "id": uid,
+        "email": user.email,
+        "displayName": user.displayName ?? "Usuario Desconocido",
+        "photoURL": user.photoURL ?? "",
+      };
+
+      _userServices.createUser(uid, data); // Llamada para crear el usuario
+    } catch (e) {
+      log("Error creating user in Realtime Database: $e");
     }
   }
 
