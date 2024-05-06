@@ -10,7 +10,7 @@ class AuthService {
   late SharedPreferences preferencias;
 
   //Instancia de userServices
-  UserServices _userServices = UserServices();
+  final UserServices _userServices = UserServices();
 
   Future<User?> createUserWithEmailAndPassword(
       String email, String password, String nombre) async {
@@ -19,7 +19,7 @@ class AuthService {
           email: email, password: password);
       //Llamar a createUserInFirestore después de la creación del usuario
       await createUserInFirestore(cred.user!, nombre);
-      await createUserInRealtimeDatabase(cred.user!);
+      await createUserInRealtimeDatabase(cred.user!, nombre);
       return cred.user;
     } catch (e) {
       log("Something went wrong");
@@ -69,13 +69,13 @@ class AuthService {
     }
   }
 
-  Future<void> createUserInRealtimeDatabase(User user) async {
+  Future<void> createUserInRealtimeDatabase(User user, nombre) async {
     try {
       final uid = user.uid;
       final data = {
         "id": uid,
         "email": user.email,
-        "displayName": user.displayName ?? "Usuario Desconocido",
+        "displayName": nombre,
         "photoURL": user.photoURL ?? "",
       };
 
