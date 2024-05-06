@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:tienda3/paginas/auth/auth_service.dart';
 import 'package:tienda3/paginas/auth/login_screen.dart';
+import 'package:tienda3/paginas/db/usuarios.dart';
 import 'package:tienda3/paginas/inicio.dart';
 import 'package:tienda3/widgets/button.dart';
 import 'package:tienda3/widgets/textfield.dart';
@@ -16,6 +17,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _auth = AuthService();
+  //UserServices _userServices = UserServices();
 
   final _name = TextEditingController();
   final _email = TextEditingController();
