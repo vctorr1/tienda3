@@ -37,32 +37,32 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             const Spacer(),
-            const Text("Login",
+            const Text("Iniciar Sesión",
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500)),
             const SizedBox(height: 50),
             CustomTextField(
-              hint: "Enter Email",
+              hint: "Introduzca su email",
               label: "Email",
               controller: _email,
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hint: "Enter Password",
-              label: "Password",
+              hint: "Introduzca una contraseña",
+              label: "Contraseña",
               controller: _password,
             ),
             const SizedBox(height: 30),
             CustomButton(
-              label: "Login",
+              label: "Iniciar Sesión",
               onPressed: _login,
             ),
             const SizedBox(height: 5),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text("Already have an account? "),
+              const Text("No tienes cuenta? "),
               InkWell(
                 onTap: () => goToSignup(context),
-                child:
-                    const Text("Signup", style: TextStyle(color: Colors.red)),
+                child: const Text("Registrarme",
+                    style: TextStyle(color: Colors.red)),
               )
             ]),
             const Spacer()
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
     preferencias = await SharedPreferences.getInstance();
     if (user != null) {
-      log("User Logged In");
+      log("Sesión iniciada");
       goToHome(context);
     }
   }

@@ -22,7 +22,7 @@ class AuthService {
       await createUserInRealtimeDatabase(cred.user!, nombre);
       return cred.user;
     } catch (e) {
-      log("Something went wrong");
+      log("Ocurrió un error al registrar usuario: $e");
     }
     return null;
   }
@@ -38,7 +38,7 @@ class AuthService {
       }
       return cred.user;
     } catch (e) {
-      log("Something went wrong");
+      log("Ocurrio un error al iniciar sesión: $e");
     }
     return null;
   }
@@ -65,7 +65,7 @@ class AuthService {
         });
       }
     } catch (e) {
-      log("Error creating user in Firestore: $e");
+      log("Error crendo usuario en Firestore: $e");
     }
   }
 
@@ -81,7 +81,7 @@ class AuthService {
 
       _userServices.createUser(uid, data); // Llamada para crear el usuario
     } catch (e) {
-      log("Error creating user in Realtime Database: $e");
+      log("Error creando usuario en Realtime Database: $e");
     }
   }
 
@@ -89,7 +89,7 @@ class AuthService {
     try {
       await _auth.signOut();
     } catch (e) {
-      log("Something went wrong");
+      log("Ocurrio un error al cerrar sesión: $e");
     }
   }
 }
