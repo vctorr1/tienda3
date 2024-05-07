@@ -7,7 +7,7 @@ import 'package:another_carousel_pro/another_carousel_pro.dart';
 
 //Imports de carpeta componentes
 import 'package:tienda3/widgets/listview_horizontal.dart';
-import 'package:tienda3/paginas/auth/auth_service.dart';
+import 'package:tienda3/paginas/db/auth_service.dart';
 import 'package:tienda3/widgets/poductos.dart';
 import 'package:tienda3/paginas/carrito.dart';
 import 'package:tienda3/paginas/auth/login_screen.dart';
