@@ -51,6 +51,7 @@ class _MyHomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         //Elevacion de la barra superior sobre el fondo
         elevation: 0.1,
         backgroundColor: Colors.red,
