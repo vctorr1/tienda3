@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:tienda3/paginas/view/inicio.dart';
+import 'package:tienda3/paginas/view/login.dart';
 import 'package:tienda3/paginas/view/login_screen.dart';
 import 'package:tienda3/paginas/view/signup_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,11 +37,11 @@ class ScreensController extends StatelessWidget {
         return Splash();
       case Status.Unauthenticated:
       case Status.Authenticating:
-        return LoginScreen();
+        return Login();
       case Status.Authenticated:
         return HomePage();
       default:
-        return LoginScreen();
+        return Login();
     }
   }
 }

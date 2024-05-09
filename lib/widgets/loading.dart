@@ -1,4 +1,4 @@
-import 'package:chat_app/helpers/style.dart';
+import 'package:tienda3/paginas/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

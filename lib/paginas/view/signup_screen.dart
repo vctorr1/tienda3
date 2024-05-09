@@ -1,4 +1,4 @@
-import 'dart:developer';
+/*import 'dart:developer';
 
 import 'package:tienda3/paginas/model/auth_service.dart';
 import 'package:tienda3/paginas/view/login_screen.dart';
@@ -101,4 +101,4 @@ class _SignupScreenState extends State<SignupScreen> {
       goToHome(context);
     }
   }
-}
+}*/

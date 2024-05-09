@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:tienda3/paginas/view/detalles_producto.dart';
 
 class Productos extends StatefulWidget {
@@ -121,4 +121,4 @@ class ProdIndividual extends StatelessWidget {
       ),
     );
   }
-}
+}*/

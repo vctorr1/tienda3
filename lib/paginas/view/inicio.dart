@@ -2,7 +2,7 @@ import 'package:tienda3/paginas/helpers/common.dart';
 import 'package:tienda3/paginas/helpers/style.dart';
 import 'package:tienda3/paginas/provider/product.dart';
 import 'package:tienda3/paginas/provider/user.dart';
-import 'package:tienda3/view/product_search.dart';
+import 'package:tienda3/paginas/view/product_search.dart';
 import 'package:tienda3/paginas/services/product.dart';
 import 'package:tienda3/widgets/custom_text.dart';
 import 'package:tienda3/widgets/featured_products.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
-import 'cart.dart';
+import 'carrito.dart';
 import 'order.dart';
 
 class HomePage extends StatefulWidget {
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                       alignment: Alignment.topRight,
                       child: GestureDetector(
                           onTap: () {
-                            _key.currentState.openEndDrawer();
+                            _key.currentState!.openEndDrawer();
                           },
                           child: Icon(Icons.menu))),
                 ),
@@ -98,13 +98,17 @@ class _HomePageState extends State<HomePage> {
                   top: 10,
                   right: 100,
                   child: Align(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                          onTap: () {
-                            _key.currentState.showSnackBar(
-                                SnackBar(content: Text("User profile")));
-                          },
-                          child: Icon(Icons.person))),
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("User profile")),
+                        );
+                      },
+                      child: Text(
+                          "Tap here"), // Solo un ejemplo para el contenido del GestureDetector
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
