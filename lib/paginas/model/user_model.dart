@@ -4,7 +4,7 @@ import 'producto_carrito.dart';
 class UserModel {
   static const ID = "uid";
   static const NAME =
-      "name"; // Cambió de 'name' a 'nombre' para ser consistente
+      "usuario"; // Cambió de 'name' a 'nombre' para ser consistente
   static const EMAIL = "email";
   static const STRIPE_ID = "stripeId";
   static const CART = "cart";

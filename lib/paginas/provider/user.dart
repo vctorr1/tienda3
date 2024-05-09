@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tienda3/paginas/model/producto_carrito.dart';
 import 'package:tienda3/paginas/model/order.dart';
-import 'package:tienda3/paginas/model/poducto.dart';
+import 'package:tienda3/paginas/model/producto.dart';
 import 'package:tienda3/paginas/model/user_model.dart';
 import 'package:tienda3/paginas/services/usuarios.dart';
 import 'package:tienda3/paginas/services/order.dart';
@@ -76,9 +76,9 @@ class UserProvider with ChangeNotifier {
       if (_user != null) {
         print("CREATE USER");
         await _userServices.createUser({
-          'nombre': name,
+          'usuario': name,
           'email': email,
-          'uid': _user!.uid,
+          'id': _user!.uid,
           'stripeId': '',
         });
 

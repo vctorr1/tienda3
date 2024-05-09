@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tienda3/paginas/helpers/common.dart';
 import 'package:tienda3/paginas/helpers/style.dart';
-import 'package:tienda3/paginas/model/poducto.dart';
+import 'package:tienda3/paginas/model/producto.dart';
 import 'package:tienda3/paginas/view/detalles_producto.dart';
 import 'package:tienda3/widgets/custom_text.dart';
 import 'package:transparent_image/transparent_image.dart';

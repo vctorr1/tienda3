@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tienda3/paginas/helpers/common.dart';
-import 'package:tienda3/paginas/model/poducto.dart';
+import 'package:tienda3/paginas/model/producto.dart';
 import 'package:tienda3/paginas/view/detalles_producto.dart';
 import 'package:tienda3/widgets/loading.dart';
 import 'package:transparent_image/transparent_image.dart';

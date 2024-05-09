@@ -5,11 +5,11 @@ import 'package:tienda3/paginas/model/user_model.dart';
 
 class UserServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String collection = "users";
+  final String collection = "usuarios";
 
   Future<void> createUser(Map<String, dynamic> data) async {
     try {
-      await _firestore.collection(collection).doc(data["uid"]).set(data);
+      await _firestore.collection(collection).doc(data["id"]).set(data);
       print("USER WAS CREATED");
     } catch (e) {
       print('ERROR: ${e.toString()}');
@@ -17,6 +17,10 @@ class UserServices {
   }
 
   Future<UserModel> getUserById(String id) async {
+    if (id == null || id.isEmpty) {
+      throw Exception("User ID cannot be null or empty");
+    }
+
     try {
       DocumentSnapshot doc =
           await _firestore.collection(collection).doc(id).get();
@@ -28,7 +32,9 @@ class UserServices {
       }
     } catch (e) {
       print("ERROR: ${e.toString()}");
-      throw Exception("User not found"); // Lanzar excepción para manejo fuera
+
+      throw Exception(
+          "User not found"); // Lanzar una excepción para manejo fuera
     }
   }
 

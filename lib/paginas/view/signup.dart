@@ -41,7 +41,7 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _buildLogo(), // Logo de la aplicación
+              //_buildLogo(), // Logo de la aplicación
               _buildNameField(), // Campo para el nombre
               _buildEmailField(), // Campo para el correo electrónico
               _buildPasswordField(), // Campo para la contraseña
@@ -55,12 +55,12 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Widget _buildLogo() {
+  /*Widget _buildLogo() {
     return Image.asset(
       'images/logo.png',
       width: 260.0,
     );
-  }
+  }*/
 
   Widget _buildNameField() {
     return _buildTextField(

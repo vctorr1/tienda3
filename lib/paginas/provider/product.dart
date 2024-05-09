@@ -1,4 +1,4 @@
-import 'package:tienda3/paginas/model/poducto.dart';
+import 'package:tienda3/paginas/model/producto.dart';
 import 'package:tienda3/paginas/services/product.dart';
 import 'package:flutter/material.dart';
 

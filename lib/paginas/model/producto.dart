@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProductModel {
   static const ID = "id";
   static const NAME = "nombre"; // Corregido de "nmbre"
-  static const PICTURE = "imagen";
+  static const PICTURE = "imagenes";
   static const PRICE = "precio";
   static const DESCRIPTION = "descripcion";
   static const CATEGORY = "categoria";
   static const FEATURED = "featured";
   static const QUANTITY = "cantidad";
   static const BRAND = "marca";
-  static const SALE = "sale";
+  static const SALE = "oferta";
   static const SIZES = "tallas";
   static const COLORS = "color";
 

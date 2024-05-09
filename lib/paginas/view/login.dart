@@ -53,9 +53,8 @@ class _LoginState extends State<Login> {
   Widget _buildLogo() {
     return Align(
       alignment: Alignment.topCenter,
-      child: Image.asset(
-        'images/logo.png',
-        width: 260,
+      child: Text(
+        "Iniciar sesión",
       ),
     );
   }

@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () {
-//                userProvider.signOut();
+                userProvider.signOut();
               },
               leading: Icon(Icons.exit_to_app),
               title: CustomText(text: "Log out"),

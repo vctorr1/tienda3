@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tienda3/paginas/model/poducto.dart'; // Asegúrate de que la importación sea correcta
+import 'package:tienda3/paginas/model/producto.dart'; // Asegúrate de que la importación sea correcta
 
 class ProductServices {
   final FirebaseFirestore _firestore =
       FirebaseFirestore.instance; // Correcto uso de FirebaseFirestore
-  final String collection = "products"; // Convierte a `final`
+  final String collection = "productos"; // Convierte a `final`
 
   // Obtener todos los productos
   Future<List<ProductModel>> getProducts() async {
@@ -40,7 +40,8 @@ class ProductServices {
 
       QuerySnapshot querySnapshot = await _firestore
           .collection(collection)
-          .orderBy("name") // Asegúrate de que "name" esté indexado en Firestore
+          .orderBy(
+              "nombre") // Asegúrate de que "name" esté indexado en Firestore
           .startAt([searchKey]).endAt([searchKey + '\uf8ff']).get();
 
       List<ProductModel> products = [];
