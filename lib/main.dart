@@ -12,8 +12,9 @@ import 'package:tienda3/paginas/provider/product.dart';
 import 'package:tienda3/paginas/provider/user.dart';
 import 'package:tienda3/paginas/view/splash.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: UserProvider.initialize()),
