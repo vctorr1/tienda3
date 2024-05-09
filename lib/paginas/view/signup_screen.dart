@@ -1,30 +1,32 @@
 import 'dart:developer';
 
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tienda3/paginas/db/auth_service.dart';
-import 'package:tienda3/paginas/auth/signup_screen.dart';
-import 'package:tienda3/paginas/inicio.dart';
+import 'package:tienda3/paginas/model/auth_service.dart';
+import 'package:tienda3/paginas/view/login_screen.dart';
+import 'package:tienda3/paginas/services/usuarios.dart';
+import 'package:tienda3/paginas/view/inicio.dart';
 import 'package:tienda3/widgets/button.dart';
 import 'package:tienda3/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _auth = AuthService();
-  late SharedPreferences preferencias;
+  //UserServices _userServices = UserServices();
 
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
+    _name.dispose();
     _email.dispose();
     _password.dispose();
   }
@@ -37,31 +39,40 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             const Spacer(),
-            const Text("Iniciar Sesión",
+            const Text("Registro",
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 50),
+            const SizedBox(
+              height: 50,
+            ),
             CustomTextField(
-              hint: "Introduzca su email",
+              hint: "Introduce tu nombre",
+              label: "Nombre",
+              controller: _name,
+            ),
+            const SizedBox(height: 20),
+            CustomTextField(
+              hint: "introduce tu email",
               label: "Email",
               controller: _email,
             ),
             const SizedBox(height: 20),
             CustomTextField(
-              hint: "Introduzca una contraseña",
-              label: "Contraseña",
+              hint: "Introduce tu contraseña",
+              label: "Contraseña",
+              isPassword: true,
               controller: _password,
             ),
             const SizedBox(height: 30),
             CustomButton(
-              label: "Iniciar Sesión",
-              onPressed: _login,
+              label: "Registrarme",
+              onPressed: _signup,
             ),
             const SizedBox(height: 5),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text("No tienes cuenta? "),
+              const Text("Ya tienes cuenta? "),
               InkWell(
-                onTap: () => goToSignup(context),
-                child: const Text("Registrarme",
+                onTap: () => goToLogin(context),
+                child: const Text("Iniciar Sesión",
                     style: TextStyle(color: Colors.red)),
               )
             ]),
@@ -72,9 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  goToSignup(BuildContext context) => Navigator.push(
+  goToLogin(BuildContext context) => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const SignupScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
 
   goToHome(BuildContext context) => Navigator.push(
@@ -82,12 +93,11 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
 
-  _login() async {
-    final user =
-        await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
-    preferencias = await SharedPreferences.getInstance();
+  _signup() async {
+    final user = await _auth.createUserWithEmailAndPassword(
+        _email.text, _password.text, _name.text);
     if (user != null) {
-      log("Sesión iniciada");
+      log("Usuario creado con exito");
       goToHome(context);
     }
   }

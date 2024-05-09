@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tienda3/main.dart';
-import 'package:tienda3/paginas/inicio.dart';
+import 'package:tienda3/paginas/view/inicio.dart';
 
 class DetallesProducto extends StatefulWidget {
   //Variables para la pagina de producto

@@ -1,9 +1,9 @@
-import 'dart:developer';
+/*import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tienda3/paginas/db/usuarios.dart';
+import 'package:tienda3/paginas/services/usuarios.dart';
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
@@ -92,4 +92,4 @@ class AuthService {
       log("Ocurrio un error al cerrar sesión: $e");
     }
   }
-}
+}*/
