@@ -1,420 +1,264 @@
+import 'package:tienda3/paginas/helpers/common.dart';
+import 'package:tienda3/paginas/helpers/style.dart';
+import 'package:tienda3/paginas/model/poducto.dart';
+import 'package:tienda3/paginas/provider/app.dart';
+import 'package:tienda3/paginas/provider/user.dart';
+import 'package:tienda3/paginas/view/carrito.dart';
+import 'package:tienda3/widgets/custom_text.dart';
+import 'package:tienda3/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:tienda3/main.dart';
-import 'package:tienda3/paginas/view/inicio.dart';
+import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
-class DetallesProducto extends StatefulWidget {
-  //Variables para la pagina de producto
-  final nombre_producto_detalle;
-  final nuevo_precio_producto_detalle;
-  final precio_producto_detalle;
-  final foto_producto_detalle;
+class ProductDetails extends StatefulWidget {
+  final ProductModel product;
 
-  const DetallesProducto({
-    super.key,
-    this.nombre_producto_detalle,
-    this.nuevo_precio_producto_detalle,
-    this.precio_producto_detalle,
-    this.foto_producto_detalle,
-  });
+  const ProductDetails({Key? key, required this.product}) : super(key: key);
 
   @override
-  State<DetallesProducto> createState() => _EstadoProductos();
+  _ProductDetailsState createState() => _ProductDetailsState();
 }
 
-class _EstadoProductos extends State<DetallesProducto> {
+class _ProductDetailsState extends State<ProductDetails> {
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  late String _color;
+  late String _size;
+  final OrderServices _orderServices = OrderServices();
+
+  @override
+  void initState() {
+    super.initState();
+    _color = widget.product.colors.first; // Acceder al primer elemento
+    _size = widget.product.sizes.first; // Acceder al primer elemento
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final appProvider = Provider.of<AppProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        //Elevacion de la barra superior sobre el fondo
-        elevation: 0.1,
-        backgroundColor: Colors.red,
-        title: InkWell(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => HomePage())));
-            },
-            child: Text('Múdez', style: TextStyle(color: Colors.white))),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
+      key: _scaffoldKey,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Loading(), // Indicador de carga
+                  ),
+                ),
+                Center(
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: widget.product.picture, // Imagen del producto
+                    fit: BoxFit.fill,
+                    height: 400,
+                    width: double.infinity,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.7),
+                          Colors.black.withOpacity(0.5),
+                          Colors.black.withOpacity(0.07),
+                          Colors.black.withOpacity(0.05),
+                          Colors.black.withOpacity(0.025),
+                        ],
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Container(),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: InkWell(
+                    onTap: () {
+                      changeScreen(context, CartScreen());
+                    },
+                    child: Card(
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(Icons.shopping_cart),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 120,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context); // Cerrar la pantalla
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(35),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          )
-        ],
-      ),
-
-      //Cuerpo de la pagina
-      body: ListView(
-        children: <Widget>[
-          Container(
-            height: 300,
-            child: GridTile(
+            Expanded(
               child: Container(
-                color: Colors.white70,
-                child: Image.asset(widget.foto_producto_detalle),
-              ),
-              footer: Container(
-                color: Colors.white70,
-                child: ListTile(
-                  leading: Text(widget.nombre_producto_detalle,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0)),
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(2, 5),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: CustomText(
+                              text: "Select a Color",
+                              color: Colors.white,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: DropdownButton<String>(
+                                value: _color,
+                                style: TextStyle(color: Colors.white),
+                                items: widget.product.colors.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: CustomText(
+                                      text: value,
+                                      color: Colors.red,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _color = value ?? _color; // Manejo de posibles valores nulos
+                                  });
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: CustomText(
+                              text: "Select a Size",
+                              color: Colors.white,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: DropdownButton<String>(
+                                value: _size,
+                                style: TextStyle(color: Colors.white),
+                                items: widget.product.sizes.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: CustomText(
+                                      text: value,
+                                      color: Colors.red,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _size = value ?? _size; // Manejo de posibles valores nulos
+                                  });
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "${widget.nuevo_precio_producto_detalle}€",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              decoration: TextDecoration.lineThrough),
+                          'Description:\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s  Lorem Ipsum has been the industry standard dummy text ever since the 1500s ',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      Expanded(
-                        child: Text(
-                          "${widget.precio_producto_detalle}€",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red,
-                              fontSize: 16.0),
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(9),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          appProvider.changeIsLoading(); // Manejo de estado
+                          bool success = await userProvider.addToCart(
+                            product: widget.product,
+                            color: _color,
+                            size: _size,
+                          );
+                          if (success) {
+                            _scaffoldKey.currentState?.showSnackBar(
+                              SnackBar(content: Text("Added to Cart!")),
+                            );
+                            await userProvider.reloadUserModel(); // Asegurar recarga del modelo
+                            appProvider.changeIsLoading();
+                          } else {
+                            _scaffoldKey.currentState?.showSnackBar(
+                              SnackBar(content: Text("Not added to Cart!")),
+                            );
+                            appProvider.changeIsLoading();
+                          }
+                        },
+                        child: appProvider.isLoading
+                            ? Loading() // Mostrar indicador de carga si está cargando
+                            : CustomText(
+                                text: "Add to Cart",
+                                size: 20,
+                                weight: FontWeight.bold,
+                              ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 20), // Espacio adicional al final
+                  ],
                 ),
               ),
             ),
-          ),
-
-          //Detalles del producto
-          Row(
-            children: <Widget>[
-              //Boton de colores
-              Expanded(
-                child: MaterialButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Color"),
-                            content: Text("Elige tu color"),
-                            actions: <Widget>[
-                              MaterialButton(
-                                //Boton de cerrar
-                                onPressed: () {
-                                  Navigator.of(context).pop(context);
-                                },
-                                child: Text("Cerrar"),
-                              )
-                            ],
-                          );
-                        });
-                  },
-                  color: Colors.white,
-                  textColor: Colors.grey,
-                  elevation: 0.2,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(child: Text("Colores")),
-                      Expanded(child: Icon(Icons.arrow_drop_down))
-                    ],
-                  ),
-                ),
-              ),
-
-              //Cantidad
-              Expanded(
-                child: MaterialButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Cantidad"),
-                            content: Text("Elige las unidades"),
-                            actions: <Widget>[
-                              MaterialButton(
-                                //Boton de cerrar
-                                onPressed: () {
-                                  Navigator.of(context).pop(context);
-                                },
-                                child: Text("Cerrar"),
-                              )
-                            ],
-                          );
-                        });
-                  },
-                  color: Colors.white,
-                  textColor: Colors.grey,
-                  elevation: 0.2,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(child: Text("Uds")),
-                      Expanded(child: Icon(Icons.arrow_drop_down))
-                    ],
-                  ),
-                ),
-              ),
-
-              //Tallas
-              Expanded(
-                child: MaterialButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Talla"),
-                            content: Text("Elige tu talla"),
-                            actions: <Widget>[
-                              MaterialButton(
-                                //Boton de cerrar
-                                onPressed: () {
-                                  Navigator.of(context).pop(context);
-                                },
-                                child: Text("Cerrar"),
-                              )
-                            ],
-                          );
-                        });
-                  },
-                  color: Colors.white,
-                  textColor: Colors.grey,
-                  elevation: 0.2,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(child: Text("Tallas")),
-                      Expanded(child: Icon(Icons.arrow_drop_down))
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          //Boton de comprar
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: MaterialButton(
-                    onPressed: () {},
-                    color: Colors.red,
-                    textColor: Colors.white,
-                    elevation: 0.2,
-                    child: Text("Comprar Ahora")),
-              ),
-
-              //Boton de agregar al carrito
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.add_shopping_cart,
-                  color: Colors.red,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.favorite_border,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
-
-          Divider(),
-
-          //Detalles del producto
-          ListTile(
-            title: Text("Detalles del producto"),
-            subtitle: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
-          ),
-
-          Divider(),
-
-          //Nombre del producto en los detalles
-          Row(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 5, 5, 5),
-              child: Text(
-                "Nombre del producto",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Text(widget.nombre_producto_detalle),
-            )
-          ]),
-
-          //EDITAR MAS ADELANTE
-          Row(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 5, 5, 5),
-              child: Text(
-                "Marca/provisional",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Text("marca/provisional"),
-            )
-          ]),
-
-          //EDITAR MAS ADELANTE
-          Row(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 5, 5, 5),
-              child: Text(
-                "Provisional",
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Text("Provisional"),
-            )
-          ]),
-
-          Divider(),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Productos similares")),
-
-          //Productos recomendados
-          Container(
-            height: 360,
-            child: ProductosSimilares(),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-//Productos similares/recomendados
-class ProductosSimilares extends StatefulWidget {
-  const ProductosSimilares({super.key});
-
-  @override
-  State<ProductosSimilares> createState() => _EstadoProductoSimilares();
-}
-
-class _EstadoProductoSimilares extends State<ProductosSimilares> {
-  var lista_productos = [
-    {
-      "nombre": "Collar multicolor",
-      "foto":
-          "imagenes/productos/quenta/Archicos_quenta_nuevos_collar_multicolor_cereza.jpg",
-      "precio_antiguo": 30,
-      "precio": 15,
-    },
-    {
-      "nombre": "Collar",
-      "foto":
-          "imagenes/productos/quenta/Archicos_quenta_nuevos_collar_multicolor_cereza.jpg",
-      "precio_antiguo": 30,
-      "precio": 15,
-    },
-    {
-      "nombre": "Collar",
-      "foto":
-          "imagenes/productos/quenta/Archicos_quenta_nuevos_collar_multicolor_cereza.jpg",
-      "precio_antiguo": 30,
-      "precio": 15,
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: lista_productos.length,
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemBuilder: (BuildContext context, int index) {
-        return ProdIndividualSimilar(
-          nombre_producto: lista_productos[index]["nombre"],
-          foto_producto: lista_productos[index]["foto"],
-          precio_antiguo: lista_productos[index]["precio_antiguo"],
-          precio: lista_productos[index]["precio"],
-        );
-      },
-    );
-  }
-}
-
-class ProdIndividualSimilar extends StatelessWidget {
-  //Variables del producto
-  final nombre_producto;
-  final foto_producto;
-  final precio_antiguo;
-  final precio;
-
-  const ProdIndividualSimilar({
-    super.key,
-    this.nombre_producto,
-    this.foto_producto,
-    this.precio_antiguo,
-    this.precio,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Hero(
-        tag: Text("hero 1"),
-        child: Material(
-          child: InkWell(
-            //Usamos función de flecha para acortar el código a escribir, context es la ruta actuasl del widget en la pagina, push indica que vamos a poner algo encima
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => DetallesProducto(
-                      //Parametros para el constructor de la pagina de producto
-                      nombre_producto_detalle: nombre_producto,
-                      nuevo_precio_producto_detalle: precio,
-                      precio_producto_detalle: precio_antiguo,
-                      foto_producto_detalle: foto_producto,
-                    ))),
-            child: GridTile(
-              footer: Container(
-                  color: Colors.white,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          nombre_producto,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      Text(
-                        "$precio€",
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      )
-                    ],
-                  )),
-              child: Image.asset(
-                foto_producto,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          ],
         ),
-      ),
+      )),
     );
   }
 }
