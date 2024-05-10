@@ -92,11 +92,11 @@ class FeaturedCard extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               TextSpan(
-                text: '\$${product.price / 100} \n',
+                text: '${product.price / 100}€ \n',
                 style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ],
           ),

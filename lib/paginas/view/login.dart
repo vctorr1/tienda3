@@ -12,8 +12,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
@@ -21,40 +19,32 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
 
-    return Scaffold(
-      key: _scaffoldKey,
-      body: userProvider.status == Status.Authenticating
-          ? Loading() // Indicador de carga
-          : _buildLoginForm(context,
-              userProvider), // Método para el formulario de inicio de sesión
+    return ScaffoldMessenger(
+      // Asegura el uso de ScaffoldMessenger
+      child: Scaffold(
+        body: userProvider.status == Status.Authenticating
+            ? Loading() // Indicador de carga
+            : _buildLoginForm(
+                context, userProvider), // Formulario de inicio de sesión
+      ),
     );
   }
 
   Widget _buildLoginForm(BuildContext context, UserProvider userProvider) {
     return Padding(
-      padding: const EdgeInsets.all(16.0), // Padding consistente
+      padding: const EdgeInsets.all(16), // Consistencia en el padding
       child: Form(
         key: _formKey,
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // Centrar los elementos
           children: <Widget>[
             const SizedBox(height: 40), // Espacio entre elementos
-            _buildLogo(), // Método para cargar el logo
             _buildEmailField(), // Campo para el correo electrónico
             _buildPasswordField(), // Campo para la contraseña
             _buildLoginButton(userProvider), // Botón para iniciar sesión
-            _buildOptionsRow(
-                context), // Fila para opciones como "Olvidé mi contraseña"
+            _buildOptionsRow(context), // Fila para opciones adicionales
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildLogo() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Text(
-        "Iniciar sesión",
       ),
     );
   }
@@ -66,7 +56,7 @@ class _LoginState extends State<Login> {
       icon: Icons.alternate_email,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "El campo no puede estar vacío";
+          return "El campo no puede estar vacío"; // Mensaje de validación
         }
         final emailPattern =
             r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -87,7 +77,7 @@ class _LoginState extends State<Login> {
       obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "El campo no puede estar vacío";
+          return "El campo no puede estar vacío"; // Mensaje de validación
         }
         if (value.length < 6) {
           return "La contraseña debe tener al menos 6 caracteres";
@@ -113,7 +103,9 @@ class _LoginState extends State<Login> {
 
               if (!success) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Inicio de sesión falló")),
+                  const SnackBar(
+                      content: Text(
+                          "Inicio de sesión falló")), // Uso de ScaffoldMessenger para SnackBar
                 );
               }
             }
@@ -153,7 +145,7 @@ class _LoginState extends State<Login> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SignUp(),
+                  builder: (context) => SignUp(), // Navegación al registro
                 ),
               );
             },
@@ -177,20 +169,23 @@ class _LoginState extends State<Login> {
     bool obscureText = false,
     required FormFieldValidator<String> validator,
   }) {
-    return Material(
-      borderRadius: BorderRadius.circular(10.0),
-      color: Colors.grey.withOpacity(0.3),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12.0),
-        child: TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            hintText: hintText,
-            icon: Icon(icon),
-            border: InputBorder.none,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14.0, 8.0, 14.0, 8.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.grey.withOpacity(0.3),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12.0),
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              hintText: hintText,
+              icon: Icon(icon),
+              border: InputBorder.none,
+            ),
+            validator: validator, // Validador de campos
           ),
-          validator: validator,
         ),
       ),
     );

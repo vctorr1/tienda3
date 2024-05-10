@@ -87,15 +87,13 @@ class ProductCard extends StatelessWidget {
               style: TextStyle(fontSize: 20, color: Colors.black),
             ),
             TextSpan(
-              text: 'by: ${product.brand} \n\n\n\n',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              text: 'Marca: ${product.brand} \n\n\n\n',
+              style: TextStyle(fontSize: 16, color: Colors.black),
             ),
             TextSpan(
-              text: '\$${product.price / 100} \t',
+              text: '${product.price / 100}€ \t',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
             ),
             TextSpan(
               text: product.sale ? 'OFERTA ' : "",

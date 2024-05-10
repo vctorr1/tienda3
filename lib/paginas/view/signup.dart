@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tienda3/paginas/helpers/common.dart';
-import 'package:tienda3/paginas/helpers/style.dart';
 import 'package:tienda3/paginas/provider/user.dart';
-import 'package:tienda3/widgets/loading.dart';
 import 'package:tienda3/paginas/view/inicio.dart';
+import 'package:tienda3/widgets/loading.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -13,9 +11,9 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  bool hidePass = true; // Para alternar la visibilidad de la contraseña
+  bool hidePass = true; // Control para alternar visibilidad de contraseña
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _name = TextEditingController();
@@ -25,42 +23,41 @@ class _SignUpState extends State<SignUp> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      key: _scaffoldKey, // Uso del scaffoldKey
-      body: userProvider.status == Status.Authenticating
-          ? Loading() // Indicador de carga durante la autenticación
-          : _buildSignUpForm(context, userProvider),
-    );
-  }
-
-  Widget _buildSignUpForm(BuildContext context, UserProvider userProvider) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0), // Padding para consistencia
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              //_buildLogo(), // Logo de la aplicación
-              _buildNameField(), // Campo para el nombre
-              _buildEmailField(), // Campo para el correo electrónico
-              _buildPasswordField(), // Campo para la contraseña
-              _buildSignUpButton(
-                  context, userProvider), // Botón para registrarse
-              _alreadyHaveAccount(), // Opción para usuarios existentes
-            ],
-          ),
-        ),
+      body: ScaffoldMessenger(
+        key: _scaffoldMessengerKey, // Para manejar SnackBars
+        child: userProvider.status == Status.Authenticating
+            ? Loading() // Mostrar indicador de carga
+            : Center(
+                // Centrar contenido en la pantalla
+                child: SingleChildScrollView(
+                  // Permite desplazamiento si es necesario
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                        16.0), // Consistencia en el padding
+                    child: _buildSignUpForm(
+                        context, userProvider), // Construir el formulario
+                  ),
+                ),
+              ),
       ),
     );
   }
 
-  /*Widget _buildLogo() {
-    return Image.asset(
-      'images/logo.png',
-      width: 260.0,
+  Widget _buildSignUpForm(BuildContext context, UserProvider userProvider) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Centrar verticalmente
+        children: <Widget>[
+          _buildNameField(),
+          _buildEmailField(),
+          _buildPasswordField(),
+          _buildSignUpButton(context, userProvider), // Botón de registro
+          _alreadyHaveAccount(), // Texto para usuarios existentes
+        ],
+      ),
     );
-  }*/
+  }
 
   Widget _buildNameField() {
     return _buildTextField(
@@ -79,7 +76,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildEmailField() {
     return _buildTextField(
       controller: _email,
-      hintText: "Email",
+      hintText: "Correo electrónico",
       icon: Icons.alternate_email,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -89,7 +86,7 @@ class _SignUpState extends State<SignUp> {
             r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
         final regex = RegExp(emailPattern);
         if (!regex.hasMatch(value)) {
-          return "Verifique el email introducido";
+          return "Por favor, ingrese un email válido";
         }
         return null;
       },
@@ -101,7 +98,7 @@ class _SignUpState extends State<SignUp> {
       controller: _password,
       hintText: "Contraseña",
       icon: Icons.lock_outline,
-      obscureText: hidePass,
+      obscureText: hidePass, // Control de visibilidad
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "La contraseña no puede estar vacía";
@@ -113,13 +110,11 @@ class _SignUpState extends State<SignUp> {
       },
       trailing: IconButton(
         icon: Icon(
-          hidePass
-              ? Icons.visibility_off
-              : Icons.visibility, // Corrección: Crear un Icon
+          hidePass ? Icons.visibility_off : Icons.visibility,
         ),
         onPressed: () {
           setState(() {
-            hidePass = !hidePass; // Alterna la visibilidad de la contraseña
+            hidePass = !hidePass; // Alternar visibilidad de contraseña
           });
         },
       ),
@@ -128,7 +123,7 @@ class _SignUpState extends State<SignUp> {
 
   Widget _buildSignUpButton(BuildContext context, UserProvider userProvider) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16), // Espacio entre campos
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
         color: Colors.black,
@@ -142,16 +137,18 @@ class _SignUpState extends State<SignUp> {
               );
 
               if (!success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  // Uso de ScaffoldMessenger
-                  const SnackBar(
-                      content: Text("El registro falló")), // SnackBar constante
+                _scaffoldMessengerKey.currentState?.showSnackBar(
+                  const SnackBar(content: Text("El registro falló")),
                 );
-                return; // Devuelve para salir de la función si el registro falló
+                return;
               }
 
-              changeScreenReplacement(
-                  context, HomePage()); // Navega a la página de inicio
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        HomePage()), // Cambia a la pantalla de inicio
+              );
             }
           },
           child: const Text(
@@ -160,7 +157,7 @@ class _SignUpState extends State<SignUp> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 20.0,
+              fontSize: 20,
             ),
           ),
         ),
@@ -178,7 +175,10 @@ class _SignUpState extends State<SignUp> {
         child: const Text(
           "Ya tengo cuenta",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.black, fontSize: 16),
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
         ),
       ),
     );
@@ -206,12 +206,11 @@ class _SignUpState extends State<SignUp> {
               decoration: InputDecoration(
                 hintText: hintText,
                 icon: Icon(icon),
-                border: InputBorder.none,
+                border: InputBorder.none, // Sin borde visible
               ),
               validator: validator,
             ),
-            trailing:
-                trailing, // Para el icono de alternancia en el campo de contraseña
+            trailing: trailing, // Para el icono adicional
           ),
         ),
       ),
