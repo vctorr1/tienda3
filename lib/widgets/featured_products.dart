@@ -16,8 +16,7 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
     // Asegurarse de que la lista de productos no sea nula
     if (productProvider.products.isEmpty) {
       return Center(
-        child: Text(
-            "No featured products available"), // Mensaje si no hay productos
+        child: Text("No hay productos"), // Mensaje si no hay productos
       );
     }
 

@@ -119,7 +119,8 @@ class _CartScreenState extends State<CartScreen> {
                                     await userProvider.reloadUserModel();
                                     _scaffoldKey.currentState?.showSnackBar(
                                       SnackBar(
-                                          content: Text("Removed from Cart!")),
+                                          content:
+                                              Text("Eliminado del carrito")),
                                     );
                                     appProvider.changeIsLoading();
                                   } else {
@@ -166,6 +167,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 onPressed: () {
                   if (userProvider.userModel.totalCartPrice == 0) {
                     // Mostrar diálogo si el carrito está vacío
@@ -174,7 +176,7 @@ class _CartScreenState extends State<CartScreen> {
                   }
                 },
                 child: CustomText(
-                  text: "Check out",
+                  text: "Pagar",
                   size: 20,
                   color: Colors.white,
                   weight: FontWeight.normal,

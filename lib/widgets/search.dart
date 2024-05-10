@@ -36,7 +36,7 @@ class _SearchState extends State<Search> {
               ),
               borderRadius: BorderRadius.circular(5.0),
             ),
-            hintText: "E.g: formal dress",
+            hintText: "Collar, etc...",
             prefixIcon: Icon(
               Icons.search,
               color: Colors.blueGrey[300],

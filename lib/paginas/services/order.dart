@@ -5,7 +5,7 @@ import 'package:tienda3/paginas/model/order.dart';
 class OrderServices {
   final FirebaseFirestore _firestore =
       FirebaseFirestore.instance; // Correcto uso
-  final String collection = "orders";
+  final String collection = "pedidos";
 
   Future<void> createOrder({
     required String userId,
@@ -23,10 +23,10 @@ class OrderServices {
       await _firestore.collection(collection).doc(id).set({
         "userId": userId,
         "id": id,
-        "cart": convertedCart,
+        "carrito": convertedCart,
         "total": totalPrice,
         "createdAt": DateTime.now().millisecondsSinceEpoch,
-        "description": description,
+        "descripcion": description,
         "status": status,
       });
     } catch (e) {
@@ -47,7 +47,7 @@ class OrderServices {
       }
       return orders;
     } catch (e) {
-      print('Error getting user orders: ${e.toString()}');
+      print('Error obteniendo pedidos: ${e.toString()}');
       return [];
     }
   }

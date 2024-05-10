@@ -20,7 +20,8 @@ class ProductServices {
       }
       return products;
     } catch (e) {
-      print("Error getting products: ${e.toString()}"); // Manejo de errores
+      print(
+          "Error consiguiendo productos: ${e.toString()}"); // Manejo de errores
       return [];
     }
   }
@@ -50,7 +51,7 @@ class ProductServices {
       }
       return products;
     } catch (e) {
-      print("Error searching products: ${e.toString()}");
+      print("Error buscando productos: ${e.toString()}");
       return [];
     }
   }

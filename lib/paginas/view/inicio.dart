@@ -38,13 +38,13 @@ class _HomePageState extends State<HomePage> {
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: black),
               accountName: CustomText(
-                text: userProvider.userModel?.name ?? "username lading...",
+                text: userProvider.userModel?.name ?? "Nombre cargando...",
                 color: white,
                 weight: FontWeight.bold,
                 size: 18,
               ),
               accountEmail: CustomText(
-                text: userProvider.userModel?.email ?? "email loading...",
+                text: userProvider.userModel?.email ?? "Email cargando...",
                 color: white,
               ),
             ),
@@ -54,14 +54,14 @@ class _HomePageState extends State<HomePage> {
                 changeScreen(context, OrdersScreen());
               },
               leading: Icon(Icons.bookmark_border),
-              title: CustomText(text: "My orders"),
+              title: CustomText(text: "Mis pedidos"),
             ),
             ListTile(
               onTap: () {
                 userProvider.signOut();
               },
               leading: Icon(Icons.exit_to_app),
-              title: CustomText(text: "Log out"),
+              title: CustomText(text: "Cerrar sesión"),
             ),
           ],
         ),
@@ -102,18 +102,18 @@ class _HomePageState extends State<HomePage> {
                     child: GestureDetector(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("User profile")),
+                          SnackBar(content: Text("Mi perfil")),
                         );
                       },
-                      child: Text(
-                          "Tap here"), // Solo un ejemplo para el contenido del GestureDetector
+                      child: Icon(Icons
+                          .person), // Solo un ejemplo para el contenido del GestureDetector
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'What are\nyou Shopping for?',
+                    'MÚDEZ',
                     style: TextStyle(
                         fontSize: 30,
                         color: Colors.black.withOpacity(0.6),
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                         changeScreen(context, ProductSearchScreen());
                       },
                       decoration: InputDecoration(
-                        hintText: "blazer, dress...",
+                        hintText: "¿Qué buscas?",
                         border: InputBorder.none,
                       ),
                     ),
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(14.0),
                   child: Container(
                       alignment: Alignment.centerLeft,
-                      child: new Text('Featured products')),
+                      child: new Text('Productos Destacados')),
                 ),
               ],
             ),
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(14.0),
                   child: Container(
                       alignment: Alignment.centerLeft,
-                      child: new Text('Recent products')),
+                      child: new Text('Productos Recientes')),
                 ),
               ],
             ),

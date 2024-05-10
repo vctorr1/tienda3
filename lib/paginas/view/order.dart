@@ -17,7 +17,7 @@ class OrdersScreen extends StatelessWidget {
         appBar: _buildAppBar(context),
         body: Center(
           child: CustomText(
-            text: "No orders yet",
+            text: "No hay pedidos",
             size: 18,
             color: Colors.grey,
           ),
@@ -42,7 +42,7 @@ class OrdersScreen extends StatelessWidget {
       iconTheme: IconThemeData(color: Colors.black),
       backgroundColor: Colors.white,
       elevation: 0.0,
-      title: CustomText(text: "Orders", size: 20, weight: FontWeight.bold),
+      title: CustomText(text: "Pedidos", size: 20, weight: FontWeight.bold),
       leading: IconButton(
         icon: Icon(Icons.close),
         onPressed: () {
@@ -63,7 +63,7 @@ class OrdersScreen extends StatelessWidget {
         weight: FontWeight.w500,
       ),
       subtitle: CustomText(
-        text: "Created on ${_formatDate(order.createdAt)}",
+        text: "Creado en ${_formatDate(order.createdAt)}",
       ),
       trailing: CustomText(
         text: order.status,
@@ -80,11 +80,11 @@ class OrdersScreen extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case "complete":
+      case "Completado":
         return Colors.green;
-      case "pending":
+      case "Pendiente":
         return Colors.orange;
-      case "cancelled":
+      case "Cancelado":
         return Colors.red;
       default:
         return Colors.grey;

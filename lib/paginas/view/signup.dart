@@ -65,11 +65,11 @@ class _SignUpState extends State<SignUp> {
   Widget _buildNameField() {
     return _buildTextField(
       controller: _name,
-      hintText: "Full Name",
+      hintText: "Nombre completo",
       icon: Icons.person_outline,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "The name field cannot be empty";
+          return "El campo no puede estar vacío";
         }
         return null;
       },
@@ -83,13 +83,13 @@ class _SignUpState extends State<SignUp> {
       icon: Icons.alternate_email,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "The email field cannot be empty";
+          return "El email no puede estar vacío";
         }
         final emailPattern =
             r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
         final regex = RegExp(emailPattern);
         if (!regex.hasMatch(value)) {
-          return "Please make sure your email address is valid";
+          return "Verifique el email introducido";
         }
         return null;
       },
@@ -99,15 +99,15 @@ class _SignUpState extends State<SignUp> {
   Widget _buildPasswordField() {
     return _buildTextField(
       controller: _password,
-      hintText: "Password",
+      hintText: "Contraseña",
       icon: Icons.lock_outline,
       obscureText: hidePass,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "The password field cannot be empty";
+          return "La contraseña no puede estar vacía";
         }
         if (value.length < 6) {
-          return "The password must be at least 6 characters long";
+          return "La contraseña debe tener al menos 6 caracteres";
         }
         return null;
       },
@@ -145,7 +145,7 @@ class _SignUpState extends State<SignUp> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   // Uso de ScaffoldMessenger
                   const SnackBar(
-                      content: Text("Sign-up failed")), // SnackBar constante
+                      content: Text("El registro falló")), // SnackBar constante
                 );
                 return; // Devuelve para salir de la función si el registro falló
               }
@@ -155,7 +155,7 @@ class _SignUpState extends State<SignUp> {
             }
           },
           child: const Text(
-            "Sign Up",
+            "Registrarme",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -176,7 +176,7 @@ class _SignUpState extends State<SignUp> {
           Navigator.pop(context); // Regresar a la pantalla anterior
         },
         child: const Text(
-          "I already have an account",
+          "Ya tengo cuenta",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),

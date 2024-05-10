@@ -62,7 +62,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                   ),
                   Positioned(
-                    top: 120,
+                    top: 0,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: InkWell(
@@ -71,14 +71,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                               context); // Cerrar el detalle del producto
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(35),
-                            ),
-                          ),
                           child: Padding(
-                            padding: const EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Icon(
                               Icons.close,
                               color: Colors.white,
@@ -115,31 +109,22 @@ class _ProductDetailsState extends State<ProductDetails> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(2, 5),
-                        blurRadius: 10,
-                      ),
-                    ],
+                    color: Colors.white,
                   ),
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         child: Row(
                           children: <Widget>[
                             CustomText(
-                              text: "Select a Color",
-                              color: Colors.white,
+                              text: "Color",
+                              color: Colors.black,
                             ),
                             DropdownButton<String>(
                               value: _color,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                               items: widget.product.colors.map((color) {
                                 return DropdownMenuItem<String>(
                                   value:
@@ -165,12 +150,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: Row(
                           children: <Widget>[
                             CustomText(
-                              text: "Select a Size",
-                              color: Colors.white,
+                              text: "Tamaño ",
+                              color: Colors.black,
                             ),
                             DropdownButton<String>(
                               value: _size,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                               items: widget.product.sizes.map((size) {
                                 return DropdownMenuItem<String>(
                                   value:
@@ -195,14 +180,28 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Description:\n${widget.product.description}.',
-                            style: TextStyle(color: Colors.white),
+                            'Descripción:\n${widget.product.description}.',
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomText(
+                              text:
+                                  '${(widget.product.price / 100).toStringAsFixed(2)}€',
+                              color: Colors.red,
+                              weight: FontWeight.bold,
+                              size: 24,
+                            ) // Mostrar en blanco),
+                            ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(9),
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black),
                           onPressed: () async {
                             appProvider.changeIsLoading(); // Cambio de estado
                             bool success = await userProvider.addToCart(
@@ -212,14 +211,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                             );
                             if (success) {
                               _scaffoldKey.currentState?.showSnackBar(
-                                SnackBar(content: Text("Added to Cart!")),
+                                SnackBar(content: Text("Añadido al carrito")),
                               );
                               await userProvider
                                   .reloadUserModel(); // Recargar modelo
                               appProvider.changeIsLoading();
                             } else {
                               _scaffoldKey.currentState?.showSnackBar(
-                                SnackBar(content: Text("Not added to Cart!")),
+                                SnackBar(content: Text("No fue añadido")),
                               );
                               appProvider.changeIsLoading();
                             }
@@ -227,9 +226,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: appProvider.isLoading
                               ? Loading() // Mostrar indicador de carga
                               : CustomText(
-                                  text: "Add to Cart",
+                                  text: "Añadir al carrito",
                                   size: 20,
                                   weight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                         ),
                       ),

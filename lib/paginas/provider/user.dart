@@ -74,7 +74,7 @@ class UserProvider with ChangeNotifier {
 
       _user = result.user;
       if (_user != null) {
-        print("CREATE USER");
+        print("Crear usuario");
         await _userServices.createUser({
           'usuario': name,
           'email': email,
@@ -133,7 +133,7 @@ class UserProvider with ChangeNotifier {
 
       return true;
     } catch (e) {
-      print("THE ERROR ${e.toString()}");
+      print("El error ${e.toString()}");
       return false;
     }
   }
@@ -148,7 +148,7 @@ class UserProvider with ChangeNotifier {
       );
       return true;
     } catch (e) {
-      print("THE ERROR ${e.toString()}");
+      print("El error ${e.toString()}");
       return false;
     }
   }
