@@ -28,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: CustomText(text: "Shopping Cart"),
+        title: CustomText(text: "Carrito"),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
@@ -43,6 +43,8 @@ class _CartScreenState extends State<CartScreen> {
               itemCount: userProvider.userModel.cart.length,
               itemBuilder: (_, index) {
                 final cartItem = userProvider.userModel.cart[index];
+                final imageUrl = cartItem.image;
+
                 return Padding(
                   padding: const EdgeInsets.all(16),
                   child: Container(
@@ -65,12 +67,18 @@ class _CartScreenState extends State<CartScreen> {
                             bottomLeft: Radius.circular(20),
                             topLeft: Radius.circular(20),
                           ),
-                          child: Image.network(
-                            cartItem.image,
-                            height: 120,
-                            width: 140,
-                            fit: BoxFit.fill,
-                          ),
+                          child: imageUrl
+                                  .isNotEmpty // Verificar si la URL no está vacía
+                              ? Image.network(
+                                  imageUrl,
+                                  height: 120,
+                                  width: 140,
+                                  fit: BoxFit.fill,
+                                )
+                              : Placeholder(
+                                  fallbackWidth: 140,
+                                  fallbackHeight:
+                                      120), // Placeholder si no hay imagen
                         ),
                         SizedBox(width: 10),
                         Expanded(
@@ -111,8 +119,7 @@ class _CartScreenState extends State<CartScreen> {
                                     await userProvider.reloadUserModel();
                                     _scaffoldKey.currentState?.showSnackBar(
                                       SnackBar(
-                                        content: Text("Removed from Cart!"),
-                                      ),
+                                          content: Text("Removed from Cart!")),
                                     );
                                     appProvider.changeIsLoading();
                                   } else {
@@ -158,136 +165,19 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.black,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    if (userProvider.userModel.totalCartPrice == 0) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Container(
-                              height: 200,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Your cart is empty',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Container(
-                              height: 200,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'You will be charged \$${userProvider.userModel.totalCartPrice / 100} upon delivery!',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(
-                                      width: 320,
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          var uuid = Uuid();
-                                          String id = uuid.v4();
-
-                                          // Verificar si user es null antes de acceder a uid
-                                          if (userProvider.user != null) {
-                                            await _orderServices.createOrder(
-                                              userId: userProvider.user!
-                                                  .uid, // Uso del operador de no-nulo
-                                              id: id,
-                                              description:
-                                                  "Some random description",
-                                              status: "complete",
-                                              totalPrice: userProvider
-                                                  .userModel.totalCartPrice,
-                                              cart: userProvider.userModel.cart,
-                                            );
-
-                                            _scaffoldKey.currentState
-                                                ?.showSnackBar(
-                                              SnackBar(
-                                                  content:
-                                                      Text("Order created!")),
-                                            );
-                                            Navigator.pop(
-                                                context); // Cerrar diálogo después de crear el pedido
-                                          } else {
-                                            _scaffoldKey.currentState
-                                                ?.showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                      "Error: User is null")),
-                                            );
-                                          }
-                                        },
-                                        child: Text("Accept"),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 320,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          "Reject",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  },
-                  child: CustomText(
-                    text: "Check out",
-                    size: 20,
-                    color: Colors.white,
-                    weight: FontWeight.normal,
-                  ),
+              ElevatedButton(
+                onPressed: () {
+                  if (userProvider.userModel.totalCartPrice == 0) {
+                    // Mostrar diálogo si el carrito está vacío
+                  } else {
+                    // Mostrar diálogo para continuar
+                  }
+                },
+                child: CustomText(
+                  text: "Check out",
+                  size: 20,
+                  color: Colors.white,
+                  weight: FontWeight.normal,
                 ),
               ),
             ],
