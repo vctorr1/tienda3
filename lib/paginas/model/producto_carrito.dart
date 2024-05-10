@@ -4,7 +4,7 @@ class CartItemModel {
   static const IMAGE = "imagen";
   static const PRODUCT_ID = "productId";
   static const PRICE = "precio";
-  static const SIZE = "talla";
+  static const SIZE = "tallas";
   static const COLOR = "color";
 
   String _id = "";

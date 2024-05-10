@@ -55,7 +55,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Center(
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
-                      image: widget.product.picture,
+                      image: widget.product.pictures.first,
                       fit: BoxFit.fill,
                       height: 400,
                       width: double.infinity,
@@ -195,7 +195,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Description:\nLorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                            'Description:\n${widget.product.description}.',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

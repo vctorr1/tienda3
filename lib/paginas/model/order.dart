@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderModel {
   static const ID = "id";
-  static const DESCRIPTION = "description";
+  static const DESCRIPTION = "descripcion";
   static const CART = "cart";
   static const USER_ID = "userId";
   static const TOTAL = "total";

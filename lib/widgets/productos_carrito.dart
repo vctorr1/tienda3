@@ -38,7 +38,7 @@ class _ProductosCarritoState extends State<ProductosCarrito> {
         return ProdCarritoIndividual(
           carrito_nombre_producto: productos_carro[index]["nombre"],
           carrito_foto_producto: productos_carro[index]["foto"],
-          carrito_tamano_producto: productos_carro[index]["tamano"],
+          carrito_tamano_producto: productos_carro[index]["tallas"],
           carrito_precio: productos_carro[index]["precio"],
           carrito_color_producto: productos_carro[index]["color"],
           carrito_cantidad_producto: productos_carro[index]["cantidad"],

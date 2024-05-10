@@ -119,7 +119,7 @@ class UserProvider with ChangeNotifier {
       CartItemModel item = CartItemModel.fromMap({
         "id": cartItemId,
         "nombre": product.name,
-        "imagenes": product.picture,
+        "imagenes": product.pictures,
         "productId": product.id,
         "precio": product.price,
         "tallas": size,

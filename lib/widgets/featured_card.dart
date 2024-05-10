@@ -56,13 +56,13 @@ class FeaturedCard extends StatelessWidget {
   }
 
   Widget _productImage() {
-    if (product.picture == null || product.picture.isEmpty) {
+    if (product.pictures == null || product.pictures.isEmpty) {
       return Container(
         color: Colors.grey.shade200,
         width: 200,
         height: 220,
         child: Center(
-          child: Text("No Image"), // Mensaje cuando no hay imagen
+          child: Text("No hay imagen"), // Mensaje cuando no hay imagen
         ),
       );
     }
@@ -70,7 +70,7 @@ class FeaturedCard extends StatelessWidget {
     return Center(
       child: FadeInImage.memoryNetwork(
         placeholder: kTransparentImage,
-        image: product.picture!,
+        image: product.pictures!.first,
         fit: BoxFit.cover,
         height: 220,
         width: 200,
@@ -88,7 +88,7 @@ class FeaturedCard extends StatelessWidget {
             children: [
               TextSpan(
                 text:
-                    '${product.name ?? "Unknown Product"} \n', // Manejo de valores nulos
+                    '${product.name ?? "Producto desconocido"} \n', // Manejo de valores nulos
                 style: TextStyle(fontSize: 18),
               ),
               TextSpan(

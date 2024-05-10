@@ -39,7 +39,7 @@ class ProductCard extends StatelessWidget {
           child: Row(
             children: <Widget>[
               _productImage(
-                  product.picture), // Uso de método para obtener imagen
+                  product.pictures.first), // Uso de método para obtener imagen
               const SizedBox(width: 10),
               _productDescription(), // Método para descripción del producto
             ],
@@ -59,7 +59,7 @@ class ProductCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child: CustomText(text: "No Image"), // Manejo de imagen nula
+          child: CustomText(text: "Sin Imagen"), // Manejo de imagen nula
         ),
       );
     }
@@ -98,7 +98,7 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: product.sale ? 'ON SALE ' : "",
+              text: product.sale ? 'OFERTA ' : "",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.red,
