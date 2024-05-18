@@ -31,7 +31,7 @@ class ProductSearchScreen extends StatelessWidget {
         },
       ),
       title: const CustomText(
-        text: "Products",
+        text: "Productos",
         size: 20,
         weight: FontWeight.bold, // Peso de fuente para mayor visibilidad
       ),
@@ -89,7 +89,8 @@ class ProductSearchScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             CustomText(
-              text: "No products found", // Mensaje si no hay productos
+              text:
+                  "No se encontraron productos.", // Mensaje si no hay productos
               color: Colors.grey,
               weight: FontWeight.w300,
               size: 22,

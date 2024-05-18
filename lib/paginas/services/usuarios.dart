@@ -10,15 +10,15 @@ class UserServices {
   Future<void> createUser(Map<String, dynamic> data) async {
     try {
       await _firestore.collection(collection).doc(data["id"]).set(data);
-      print("USER WAS CREATED");
+      print("Usuario creado");
     } catch (e) {
-      print('ERROR: ${e.toString()}');
+      print('Error: ${e.toString()}');
     }
   }
 
   Future<UserModel> getUserById(String id) async {
     if (id == null || id.isEmpty) {
-      throw Exception("User ID cannot be null or empty");
+      throw Exception("El usuario no puede estar vacío");
     }
 
     try {
@@ -28,13 +28,13 @@ class UserServices {
       if (doc.exists && doc.data() != null) {
         return UserModel.fromSnapshot(doc);
       } else {
-        throw Exception("User not found");
+        throw Exception("Usuario no encontrado");
       }
     } catch (e) {
-      print("ERROR: ${e.toString()}");
+      print("Error: ${e.toString()}");
 
       throw Exception(
-          "User not found"); // Lanzar una excepción para manejo fuera
+          "Usuario no encontrado"); // Lanzar una excepción para manejo fuera
     }
   }
 
@@ -43,7 +43,7 @@ class UserServices {
     required CartItemModel cartItem,
   }) async {
     await _firestore.collection(collection).doc(userId).update({
-      "cart": FieldValue.arrayUnion([cartItem.toMap()]),
+      "carrito": FieldValue.arrayUnion([cartItem.toMap()]),
     });
   }
 
@@ -52,7 +52,7 @@ class UserServices {
     required CartItemModel cartItem,
   }) async {
     await _firestore.collection(collection).doc(userId).update({
-      "cart": FieldValue.arrayRemove([cartItem.toMap()]),
+      "carrito": FieldValue.arrayRemove([cartItem.toMap()]),
     });
   }
 }

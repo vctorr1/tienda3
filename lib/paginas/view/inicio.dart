@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: black),
+              decoration: BoxDecoration(color: Colors.orange),
               accountName: CustomText(
                 text: userProvider.userModel?.name ?? "Nombre cargando...",
                 color: white,
@@ -47,6 +47,11 @@ class _HomePageState extends State<HomePage> {
                 text: userProvider.userModel?.email ?? "Email cargando...",
                 color: white,
               ),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: Icon(Icons.category),
+              title: CustomText(text: "Categorías"),
             ),
             ListTile(
               onTap: () async {
@@ -62,6 +67,11 @@ class _HomePageState extends State<HomePage> {
               },
               leading: Icon(Icons.exit_to_app),
               title: CustomText(text: "Cerrar sesión"),
+            ),
+            ListTile(
+              onTap: () {},
+              leading: Icon(Icons.help),
+              title: CustomText(text: "Sobre nosotros"),
             ),
           ],
         ),

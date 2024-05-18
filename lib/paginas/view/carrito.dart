@@ -97,7 +97,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: "\$${cartItem.price / 100} \n\n",
+                                      text: "${cartItem.price / 100}€ \n\n",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,
@@ -156,7 +156,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     TextSpan(
-                      text: "\$${userProvider.userModel.totalCartPrice / 100}",
+                      text: "${userProvider.userModel.totalCartPrice / 100}€",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 22,

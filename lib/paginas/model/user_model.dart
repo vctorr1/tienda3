@@ -7,7 +7,7 @@ class UserModel {
       "usuario"; // Cambió de 'name' a 'nombre' para ser consistente
   static const EMAIL = "email";
   static const STRIPE_ID = "stripeId";
-  static const CART = "cart";
+  static const CART = "carrito";
 
   String _name = "";
   String _email = "";
