@@ -4,6 +4,7 @@ import 'package:tienda3/paginas/helpers/style.dart';
 import 'package:tienda3/paginas/provider/user.dart';
 import 'package:tienda3/paginas/view/signup.dart';
 import 'package:tienda3/widgets/loading.dart';
+import 'package:tienda3/paginas/provider/user.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -128,13 +129,21 @@ class _LoginState extends State<Login> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Olvide mi contraseña",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
+          child: InkWell(
+            onTap: () async {
+              // TODO: Enviar correo para recuperar contraseña
+              await UserProvider.initialize().resetPassword(email: _email.text);
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(content: Text("Mi perfil")));
+            },
+            child: Text(
+              "Olvide mi contraseña",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),

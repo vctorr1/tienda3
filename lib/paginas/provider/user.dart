@@ -96,6 +96,14 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  Future<void> resetPassword({required String email}) async {
+    try {
+      return await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print(e); // Lanzar una excepción para manejo fuera
+    }
+  }
+
   Future<void> _onStateChanged(User? user) async {
     if (user == null) {
       _status = Status.Unauthenticated;
@@ -113,6 +121,10 @@ class UserProvider with ChangeNotifier {
     required String color,
   }) async {
     try {
+      if (_user == null) {
+        // No hay usuario autenticado, no se puede agregar al carrito
+        return false;
+      }
       var uuid = Uuid();
       String cartItemId = uuid.v4();
 
@@ -142,6 +154,10 @@ class UserProvider with ChangeNotifier {
     required CartItemModel cartItem,
   }) async {
     try {
+      if (_user == null) {
+        // No hay usuario autenticado, no se puede eliminar del carrito
+        return false;
+      }
       await _userServices.removeFromCart(
         userId: _user!.uid,
         cartItem: cartItem,
@@ -174,5 +190,10 @@ class UserProvider with ChangeNotifier {
     _status = Status.Unauthenticated;
     notifyListeners();
     return Future.delayed(Duration.zero);
+  }
+
+  void clearCart() {
+    userModel.cart.clear();
+    notifyListeners();
   }
 }
