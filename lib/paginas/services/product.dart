@@ -1,27 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tienda3/paginas/model/producto.dart'; // Asegúrate de que la importación sea correcta
+import 'package:tienda3/paginas/model/producto.dart';
 
 class ProductServices {
-  final FirebaseFirestore _firestore =
-      FirebaseFirestore.instance; // Correcto uso de FirebaseFirestore
-  final String collection = "productos"; // Convierte a `final`
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String collection = "productos";
 
   // Obtener todos los productos
   Future<List<ProductModel>> getProducts() async {
     try {
       QuerySnapshot querySnapshot =
-          await _firestore.collection(collection).get(); // Uso de `get()`
-
+          await _firestore.collection(collection).get();
       List<ProductModel> products = [];
       for (var doc in querySnapshot.docs) {
-        // Cambiar de `documents` a `docs`
-        products.add(ProductModel.fromSnapshot(
-            doc)); // Asegurarse de que `ProductModel.fromSnapshot` esté correcto
+        products.add(ProductModel.fromSnapshot(doc));
       }
       return products;
     } catch (e) {
-      print(
-          "Error consiguiendo productos: ${e.toString()}"); // Manejo de errores
+      print("Error consiguiendo productos: ${e.toString()}");
+      return [];
+    }
+  }
+
+  // Obtener todas las categorías
+  Future<List<String>> getCategories() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firestore.collection(collection).get();
+      Set<String> categories = Set();
+      for (var doc in querySnapshot.docs) {
+        categories
+            .add(doc['categoria']); // Asegúrate de que el campo es correcto
+      }
+      return categories.toList();
+    } catch (e) {
+      print("Error consiguiendo categorías: ${e.toString()}");
       return [];
     }
   }
@@ -30,21 +42,15 @@ class ProductServices {
   Future<List<ProductModel>> searchProducts(
       {required String productName}) async {
     try {
-      // Asegurarse de que `productName` no sea nulo
       if (productName.isEmpty) {
         return [];
       }
-
-      // Convierte la primera letra a mayúscula para la búsqueda
       String searchKey =
           productName[0].toUpperCase() + productName.substring(1);
-
       QuerySnapshot querySnapshot = await _firestore
           .collection(collection)
-          .orderBy(
-              "nombre") // Asegúrate de que "name" esté indexado en Firestore
+          .orderBy("nombre")
           .startAt([searchKey]).endAt([searchKey + '\uf8ff']).get();
-
       List<ProductModel> products = [];
       for (var doc in querySnapshot.docs) {
         products.add(ProductModel.fromSnapshot(doc));

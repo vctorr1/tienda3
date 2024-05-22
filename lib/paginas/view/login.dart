@@ -135,8 +135,6 @@ class _LoginState extends State<Login> {
             onTap: () async {
               // TODO: Enviar correo para recuperar contraseña
               await UserProvider.initialize().resetPassword(email: _email.text);
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text("Mi perfil")));
             },
             child: Text(
               "Olvide mi contraseña",

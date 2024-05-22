@@ -6,6 +6,7 @@ import 'package:tienda3/paginas/services/order.dart';
 import 'package:tienda3/widgets/custom_text.dart';
 import 'package:tienda3/widgets/loading.dart';
 import 'package:uuid/uuid.dart';
+import 'package:tienda3/paginas/model/producto_carrito.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -21,6 +22,55 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final appProvider = Provider.of<AppProvider>(context);
+
+    Future<void> _handlePayment() async {
+      if (userProvider.userModel.totalCartPrice == 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El carrito está vacío')),
+        );
+        return;
+      }
+
+      final String userId = userProvider.userModel.id;
+      if (userId.isEmpty) {
+        print('Error: userId está vacío');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: userId está vacío')),
+        );
+        return;
+      }
+
+      final String orderId = Uuid().v4();
+      final String description = "Pedido de prueba";
+      final String status = "Pendiente";
+      final int totalPrice = userProvider.userModel.totalCartPrice;
+      final List<CartItemModel> cartItems = userProvider.userModel.cart;
+
+      appProvider.changeIsLoading();
+
+      try {
+        await _orderServices.createOrder(
+          userId: userId,
+          id: orderId,
+          description: description,
+          status: status,
+          cart: cartItems,
+          totalPrice: totalPrice,
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Pedido creado con éxito')),
+        );
+
+        userProvider.clearCart();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al crear el pedido')),
+        );
+      } finally {
+        appProvider.changeIsLoading();
+      }
+    }
 
     return Scaffold(
       key: _scaffoldKey,
@@ -67,8 +117,7 @@ class _CartScreenState extends State<CartScreen> {
                             bottomLeft: Radius.circular(20),
                             topLeft: Radius.circular(20),
                           ),
-                          child: imageUrl
-                                  .isNotEmpty // Verificar si la URL no está vacía
+                          child: imageUrl.isNotEmpty
                               ? Image.network(
                                   imageUrl,
                                   height: 120,
@@ -77,8 +126,8 @@ class _CartScreenState extends State<CartScreen> {
                                 )
                               : Placeholder(
                                   fallbackWidth: 140,
-                                  fallbackHeight:
-                                      120), // Placeholder si no hay imagen
+                                  fallbackHeight: 120,
+                                ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
@@ -117,7 +166,7 @@ class _CartScreenState extends State<CartScreen> {
                                   );
                                   if (success) {
                                     await userProvider.reloadUserModel();
-                                    _scaffoldKey.currentState?.showSnackBar(
+                                    ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:
                                               Text("Eliminado del carrito")),
@@ -168,12 +217,94 @@ class _CartScreenState extends State<CartScreen> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                onPressed: () {
+                onPressed: () async {
                   if (userProvider.userModel.totalCartPrice == 0) {
-                    // Mostrar diálogo si el carrito está vacío
-                  } else {
-                    // Mostrar diálogo para continuar
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Container(
+                              height: 200,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Tu carrito está vacío',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                    return;
                   }
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: Container(
+                            height: 200,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Serás cobrado ${userProvider.userModel.totalCartPrice / 100}€ al momento de la entrega.',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    width: 320.0,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        await _handlePayment();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "Aceptar",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF1BC0C5)),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 320.0,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "Rechazar",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      });
                 },
                 child: CustomText(
                   text: "Pagar",

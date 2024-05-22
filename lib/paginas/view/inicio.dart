@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
+import 'categorias.dart';
+
 import 'carrito.dart';
 import 'order.dart';
 
@@ -49,7 +51,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CategoryPage()),
+                );
+              },
               leading: Icon(Icons.category),
               title: CustomText(text: "Categorías"),
             ),
