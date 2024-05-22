@@ -7,6 +7,7 @@ import 'package:tienda3/widgets/custom_text.dart';
 import 'package:tienda3/widgets/loading.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tienda3/paginas/model/producto_carrito.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -19,32 +20,39 @@ class _CartScreenState extends State<CartScreen> {
   final OrderServices _orderServices = OrderServices();
 
   @override
+  void initState() {
+    super.initState();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.loadUser(); // Asegurarse de que el usuario esté cargado
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final appProvider = Provider.of<AppProvider>(context);
 
     Future<void> _handlePayment() async {
-      if (userProvider.userModel.totalCartPrice == 0) {
+      final User? firebaseUser = FirebaseAuth.instance.currentUser;
+      if (firebaseUser == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('El carrito está vacío')),
+          SnackBar(content: Text('Error: No se pudo obtener el userId')),
         );
         return;
       }
 
-      final String userId = userProvider.userModel.id;
-      if (userId.isEmpty) {
-        print('Error: userId está vacío');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: userId está vacío')),
-        );
-        return;
-      }
-
+      final String userId = firebaseUser.uid;
       final String orderId = Uuid().v4();
       final String description = "Pedido de prueba";
       final String status = "Pendiente";
       final int totalPrice = userProvider.userModel.totalCartPrice;
       final List<CartItemModel> cartItems = userProvider.userModel.cart;
+
+      if (cartItems.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El carrito está vacío')),
+        );
+        return;
+      }
 
       appProvider.changeIsLoading();
 

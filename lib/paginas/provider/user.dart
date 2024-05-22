@@ -19,6 +19,8 @@ class UserProvider with ChangeNotifier {
   Status _status = Status.Uninitialized;
   final UserServices _userServices = UserServices();
   final OrderServices _orderServices = OrderServices();
+  final FirebaseFirestore _firestore =
+      FirebaseFirestore.instance; // Añadir esta línea
 
   late UserModel _userModel; // Se inicializa más adelante
 
@@ -34,6 +36,16 @@ class UserProvider with ChangeNotifier {
     _auth
         .authStateChanges()
         .listen(_onStateChanged); // Escuchar cambios en la autenticación
+  }
+
+  Future<void> loadUser() async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('usuarios').doc(currentUser.uid).get();
+      _userModel = UserModel.fromSnapshot(userDoc);
+      notifyListeners();
+    }
   }
 
   Future<bool> signIn(String email, String password) async {
@@ -192,8 +204,13 @@ class UserProvider with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
-  void clearCart() {
-    userModel.cart.clear();
-    notifyListeners();
+  Future<void> clearCart() async {
+    if (_userModel.cart.isNotEmpty) {
+      _userModel.cart.clear();
+      await _firestore.collection('usuarios').doc(_user!.uid).update({
+        'carrito': [],
+      });
+      notifyListeners();
+    }
   }
 }
