@@ -39,26 +39,12 @@ class ProductServices {
   }
 
   // Buscar productos por nombre
-  Future<List<ProductModel>> searchProducts(
-      {required String productName}) async {
-    try {
-      if (productName.isEmpty) {
-        return [];
-      }
-      String searchKey =
-          productName[0].toUpperCase() + productName.substring(1);
-      QuerySnapshot querySnapshot = await _firestore
-          .collection(collection)
-          .orderBy("nombre")
-          .startAt([searchKey]).endAt([searchKey + '\uf8ff']).get();
-      List<ProductModel> products = [];
-      for (var doc in querySnapshot.docs) {
-        products.add(ProductModel.fromSnapshot(doc));
-      }
-      return products;
-    } catch (e) {
-      print("Error buscando productos: ${e.toString()}");
-      return [];
-    }
+  Future<List<ProductModel>> searchProducts({String productName = ""}) async {
+    QuerySnapshot snapshot = await _firestore
+        .collection(collection)
+        .where('nombre', isGreaterThanOrEqualTo: productName)
+        .where('nombre', isLessThanOrEqualTo: productName + '\uf8ff')
+        .get();
+    return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
   }
 }

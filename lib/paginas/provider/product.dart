@@ -28,8 +28,14 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future search({String productName = ""}) async {
-    productsSearched =
-        await _productServices.searchProducts(productName: productName);
+    // Convertir a minúsculas para hacer la búsqueda insensible a mayúsculas
+    String lowerCaseName = productName.toLowerCase();
+
+    // Realizar búsqueda insensible a mayúsculas
+    productsSearched = products.where((product) {
+      return product.name.toLowerCase().contains(lowerCaseName);
+    }).toList();
+
     notifyListeners();
   }
 }

@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.orange),
+              decoration: BoxDecoration(color: Colors.black),
               accountName: CustomText(
                 text: userProvider.userModel?.name ?? "Nombre cargando...",
                 color: white,

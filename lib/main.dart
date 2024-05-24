@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:tienda3/paginas/view/inicio.dart';
 import 'package:tienda3/paginas/view/login.dart';
-import 'package:tienda3/paginas/view/login_screen.dart';
-import 'package:tienda3/paginas/view/signup_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
