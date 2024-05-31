@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,6 +39,19 @@ dependencies:
   cloud_firestore: ^4.17.2
   firebase_core: ^2.30.1
   firebase_auth: ^4.19.4
+  another_carousel_pro: ^1.0.2
+  dcdg: ^4.1.0
+  google_sign_in: ^6.2.1
+  shared_preferences: ^2.2.3
+  fluttertoast: ^8.2.5
+  email_validator: ^2.1.17
+  firebase_database: ^10.5.4
+  provider: ^6.1.2
+  uuid: ^4.4.0
+  flutter_typeahead: ^5.2.0
+  transparent_image: ^2.0.1
+  flutter_spinkit: ^5.2.1
+  flutter_launcher_icons: ^0.12.0
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +66,14 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+#Sección para iconos de la app
+flutter_launcher_icons:
+  image_path_ios: "imagenes/launcher_icons/appstore.png"
+  image_path_android: "imagenes/launcher_icons/playstore.png"
+  android: true
+  ios: true
+  min_sdk_android: 21 # android min sdk min:16, default 21
+ 
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -68,6 +90,12 @@ flutter:
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
+  assets:
+    # Ahora viene imagenes de las categorias
+    - imagenes/categorias/shirt.png
+    - imagenes/categorias/diamond.png
+    - imagenes/categorias/photo.png
+    - imagenes/categorias/brush.png
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
