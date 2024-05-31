@@ -4,6 +4,6 @@ Proximamente en Google Play y en la Appstore.
 
 ## Descubre la aplicación
 
-This project is a starting point for a Flutter application.
-
 Pruébala tú mismo
+
+Aplicación realizada por Víctor Ríos usando Flutter/Dart.
